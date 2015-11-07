@@ -5,6 +5,7 @@ using System.Collections;
 public class Player_Script : MonoBehaviour {
 
 	public GameObject Weopon;
+	public GameObject Body;
 	public GameObject barrelPivot;
 
 	public float playerSpeed;
@@ -16,6 +17,7 @@ public class Player_Script : MonoBehaviour {
 	Ray ray;
 	RaycastHit hit;
 	Vector3 barrelpivotRotation;
+	Vector3 tempVector3;
 
 	// Use this for initialization
 	void Start () {
@@ -53,6 +55,7 @@ public class Player_Script : MonoBehaviour {
 			lastSingleFB = -1;
 		} else {
 			currentFB = 0;
+			lastSingleFB = 0;
 		}
 
 		if (Input.GetKey ("left") && Input.GetKey ("right")) {
@@ -65,36 +68,17 @@ public class Player_Script : MonoBehaviour {
 			lastSingleLR = -1;
 		} else {
 			currentLR = 0;
+			lastSingleLR = 0;
 		}
-
 		if ((Math.Abs (currentLR) + Math.Abs (currentFB)) == 2) {
 			transform.position += new Vector3 (currentLR, 0, currentFB) * playerSpeed * 0.70710678118f * Time.deltaTime;
 		} else {
 			transform.position += new Vector3 (currentLR, 0, currentFB) * playerSpeed * Time.deltaTime;
 		}
 
-
-
-//		if (currentFB == 1  && currentLR == 1){
-//			transform.position += Global_Script.forewardRight * Time.deltaTime;
-//		}else if (currentFB == 1  && currentLR == 0){
-//			transform.position += Vector3.forward * Time.deltaTime;
-//		}else if (currentFB == 1  && currentLR == -1){
-//			transform.position += Global_Script.forewardLeft * Time.deltaTime;
-//		}else if (currentFB == 0  && currentLR == 1){
-//			transform.position += Vector3.right * Time.deltaTime;
-//		}else if (currentFB == 0  && currentLR == 0){
-//			// Do Nothing
-//		}else if (currentFB == 0  && currentLR == -1){
-//			transform.position += Vector3.left * Time.deltaTime;
-//		}else if (currentFB == -1 && currentLR == 1){
-//			transform.position += Global_Script.backRight * Time.deltaTime;
-//		}else if (currentFB == -1 && currentLR == 0){
-//			transform.position += Vector3.back * Time.deltaTime;
-//		}else if (currentFB == -1 && currentLR == -1){
-//			transform.position += Global_Script.backLeft * Time.deltaTime;
-//		}else{
-//			print("something wrong happened");
-//		}
+		if (!(currentLR == 0 && currentFB == 0)) {
+			tempVector3.y = (float)((180/Math.PI)*Math.Atan2( currentLR, currentFB ));
+			Body.transform.rotation = Quaternion.Euler(tempVector3);
+		}
 	}
 }
