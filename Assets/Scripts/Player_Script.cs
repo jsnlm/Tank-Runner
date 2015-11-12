@@ -31,11 +31,11 @@ public class Player_Script : MonoBehaviour {
 		ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		Physics.Raycast(ray, out hit);
 		barrelpivotRotation = barrelPivot.transform.rotation.eulerAngles;
-		barrelpivotRotation.y = (float)((180/Math.PI)*Math.Atan2(hit.point.x - transform.position.x, hit.point.z - transform.position.z));
+		barrelpivotRotation.y = (float)((180/Math.PI)*Math.Atan2(hit.point.x - GetComponent<Rigidbody>().position.x, hit.point.z - GetComponent<Rigidbody>().position.z));
 		this.transform.GetChild(1).gameObject.transform.rotation = Quaternion.Euler(barrelpivotRotation);
-
+//		Debug.Log ("GetComponent<Rigidbody>().worldCenterOfMass : " + GetComponent<Rigidbody> ().worldCenterOfMass);
 		if (Input.GetMouseButtonDown(0)) {
-			print("Pressed left click.");
+			//print("transform.position : " + transform.position);
 			GameObject bulletStartPoint = barrelPivot.transform.GetChild(1).gameObject;
 			GameObject bullet = Instantiate(Weopon);
 			bullet.transform.position = bulletStartPoint.transform.position;
@@ -71,9 +71,17 @@ public class Player_Script : MonoBehaviour {
 			lastSingleLR = 0;
 		}
 		if ((Math.Abs (currentLR) + Math.Abs (currentFB)) == 2) {
-			transform.position += new Vector3 (currentLR, 0, currentFB) * playerSpeed * 0.70710678118f * Time.deltaTime;
+//			transform.position += new Vector3 (currentLR, 0, currentFB) * playerSpeed * 0.70710678118f * Time.deltaTime;
+
+			Vector3 auflaug = new Vector3 (currentLR, 0, currentFB) * playerSpeed * 0.70710678118f * Time.deltaTime;
+			Body.GetComponent<Rigidbody>().velocity = auflaug;
+//			print(auflaug);
 		} else {
-			transform.position += new Vector3 (currentLR, 0, currentFB) * playerSpeed * Time.deltaTime;
+//			transform.position += new Vector3 (currentLR, 0, currentFB) * playerSpeed * Time.deltaTime;
+
+			Vector3 auflaug = new Vector3 (currentLR, 0, currentFB) * playerSpeed * Time.deltaTime;
+			Body.GetComponent<Rigidbody>().velocity = new Vector3 (currentLR, 0, currentFB) * playerSpeed * Time.deltaTime;
+//			print(auflaug);
 		}
 
 		if (!(currentLR == 0 && currentFB == 0)) {
